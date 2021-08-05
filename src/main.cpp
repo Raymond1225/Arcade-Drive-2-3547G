@@ -116,6 +116,16 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+  DeployLift();
+  DriveFwd(48);
+  RaiseLift();
+  DriveFwd(12);
+  TurnRight90(1);
+  DeployTail();
+  DriveFwd(-36);
+  RaiseTail();
+  TurnRight90(1);
+  DriveFwd(36);
 	/**
 	field wall to middle line: 71in
 	Lift to back: 23in
@@ -135,16 +145,6 @@ void autonomous() {
 	5. Pick up center and turn 90 degrees right.
 	6. Drive forward to score 40 points.
 	*/
-	DeployLift();
-	DriveFwd(48);
-	RaiseLift();
-	DriveFwd(12);
-	TurnRight90(1);
-	DeployTail();
-	DriveFwd(-36);
-	RaiseTail();
-	TurnRight90(1);
-	DriveFwd(36);
 }
 
 
