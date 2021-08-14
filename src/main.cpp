@@ -172,6 +172,7 @@ void autonomous() {
  	pros::Motor Lift_One(2);
  	pros::Motor Lift_Two(12, true);
 	pros::Motor Hook(15);
+  pros::Motor Lift_Hook(13);
 	int hold;
 	int timer = 1;
 	int hold_Tail;
@@ -210,12 +211,6 @@ void autonomous() {
 			btm_left_mtr = left - leftx;
 		}
 
-		if (master.get_digital(DIGITAL_X)){
-			top_left_mtr.move_velocity(50);
-		  top_right_mtr.move_velocity(50);
-			btm_left_mtr.move_velocity(50);
-			btm_right_mtr.move_velocity(50);
-		}
 		/*
 		else if ((-right - right < 5) && (rightx - rightx < 5)){
 			top_left_mtr = right + rightx;
@@ -290,13 +285,17 @@ void autonomous() {
 	 			Lift_Two.move_velocity(-100);
 				hold = Lift_One.get_position();
 			}
+      /*
 	  	else if (Lift_One.get_position() < (hold - 5)){
 				Lift_One.move_velocity(1);
 				Lift_Two.move_velocity(1);
 	  	}
+      */
 			else {
-				Lift_One.move_velocity(0);
-				Lift_Two.move_velocity(0);
+        Lift_One.move_velocity(0);
+	 			Lift_Two.move_velocity(0);
+				Lift_One.set_brake_mode(MOTOR_BRAKE_HOLD);;
+				Lift_Two.set_brake_mode(MOTOR_BRAKE_HOLD);;
 			}
 
 
@@ -308,12 +307,26 @@ void autonomous() {
 				Hook.move_velocity(-100);
 				hold_Tail = Hook.get_position();
 			}
+      /*
 			else if (Hook.get_position() < (hold_Tail - 5)){
 				Hook.move_velocity(1);
 			}
+      */
 			else {
-				Hook.move_velocity(0);
+        Hook.move_velocity(0);
+				Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
 			}
+
+      if (master.get_digital(DIGITAL_X)){
+        Lift_Hook.move_velocity(100);
+      }
+      else if (master.get_digital(DIGITAL_Y)){
+        Lift_Hook.move_velocity(-100);
+      }
+      else {
+        Lift_Hook.move_velocity(0);
+        Lift_Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
+      }
  		pros::delay(10);
  	}
  }
