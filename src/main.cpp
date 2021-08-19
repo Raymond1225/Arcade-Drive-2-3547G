@@ -52,9 +52,9 @@ void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Hello PROS User!");
 
-	pros::lcd::register_btn1_cb(on_center_button);
+	pros::lcd::register_btn0_cb(on_center_button);
   pros::lcd::register_btn1_cb(on_button_1);
-  pros::lcd::register_btn1_cb(on_button_2);
+  pros::lcd::register_btn2_cb(on_button_2);
 }
 
 /**
@@ -177,7 +177,7 @@ else if (autonselect == 2){
  */
  void opcontrol() {
  	pros::Controller master(pros::E_CONTROLLER_MASTER);
- 	pros::Motor top_left_mtr(11);
+ 	pros::Motor top_left_mtr(14);
  	pros::Motor top_right_mtr(5, true);
  	pros::Motor btm_left_mtr(20);
  	pros::Motor btm_right_mtr(10, true);
@@ -188,15 +188,27 @@ else if (autonselect == 2){
 	int hold;
 	int timer = 1;
 	int hold_Tail;
+  int DriverSelect = 1;
+
+
 
  	while (true) {
- 		int left = master.get_analog(ANALOG_LEFT_Y);
- 		int right = master.get_analog(ANALOG_RIGHT_Y);
- 		int leftx = master.get_analog(ANALOG_LEFT_X);
- 		int rightx = master.get_analog(ANALOG_RIGHT_X);
-    std::string DriverSelect = "Tank";
+    int left = master.get_analog(ANALOG_LEFT_Y);
+    int right = master.get_analog(ANALOG_RIGHT_Y);
+    int leftx = master.get_analog(ANALOG_LEFT_X);
+    int rightx = master.get_analog(ANALOG_RIGHT_X);
+
+
+
+      top_left_mtr = left;
+      btm_left_mtr = left;
+      top_right_mtr = right;
+      btm_right_mtr = right;
+
+
+
 		/*Check left joystick for turn input*/
-    while(DriverSelect == "Tank") {
+    if(DriverSelect == 1) {
       top_left_mtr = left;
       btm_left_mtr = left;
       top_right_mtr = right;
@@ -261,11 +273,11 @@ else if (autonselect == 2){
         }
 
         if (master.get_digital(DIGITAL_UP)) {
-          DriverSelect = "Arcade";
+          DriverSelect = 2;
         }
     }
 
-    while(DriverSelect == "Arcade") {
+    else if(DriverSelect == 2) {
       top_left_mtr = left;
       btm_left_mtr = left;
       top_right_mtr = left;
@@ -344,7 +356,7 @@ else if (autonselect == 2){
         }
 
         if (master.get_digital(DIGITAL_UP)) {
-          DriverSelect = "Tank";
+          DriverSelect = 1;
         }
     }
 /*
