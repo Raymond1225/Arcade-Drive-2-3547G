@@ -36,7 +36,7 @@ void on_button_2() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "Right Side Auton Active");
+		pros::lcd::set_text(2, "#3 Auton Active");
     autonselect = 2;
 	} else {
 		pros::lcd::clear_line(2);
