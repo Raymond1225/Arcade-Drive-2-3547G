@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include "Functions_and_Variables.h"
 /**
  * A callback function for LLEMU's center button.
  *
@@ -7,72 +7,41 @@
  * "I was pressed!" and nothing.
  */
 
- pros::Controller master(pros::E_CONTROLLER_MASTER);
- pros::Motor top_left_mtr(11);
- pros::Motor top_right_mtr(5, true);
- pros::Motor btm_left_mtr(20);
- pros::Motor btm_right_mtr(10, true);
- pros::Motor Lift_One(2);
- pros::Motor Lift_Two(12, true);
- pros::Motor Hook(15);
+ int autonselect;
 
 
-void DriveFwd(int T1) {
-	//Reversing right motors may be necesarry
-	top_left_mtr.move_relative((T1 / 17.72) * 1800, 100);
-	btm_left_mtr.move_relative((T1 / 17.72) * 1800, 100);
-	top_right_mtr.move_relative((T1 / 17.72) * 1800, 100);
-	btm_right_mtr.move_relative((T1 / 17.72) * 1800, 100);
-}
-
-void TurnRight90(int NT) {
- //Reversing right motors may be necesarry
- top_left_mtr.move_relative(2137 * NT, 100);
- btm_left_mtr.move_relative(2137 * NT, 100);
- top_right_mtr.move_relative(-2137 * NT, 100);
- btm_right_mtr.move_relative(-2137 * NT, 100);
-}
-
-void TurnLeft90(int NT) {
- //Reversing right motors may be necesarry
- top_left_mtr.move_relative(-2137 * NT, 100);
- btm_left_mtr.move_relative(-2137 * NT, 100);
- top_right_mtr.move_relative(2137 * NT, 100);
- btm_right_mtr.move_relative(2137 * NT, 100);
-}
-
-void DeployLift() {
- //Reversing right motors may be necesarry
- Lift_One.move_relative(-900, 100);
- Lift_One.move_relative(-900, 100);
-}
-
-void RaiseLift() {
- //Reversing right motors may be necesarry
- Lift_One.move_relative(800, 100);
- Lift_One.move_relative(800, 100);
-}
-
-void DeployTail() {
- //Reversing right motors may be necesarry
- Hook.move_relative(-900, 100);
-}
-
-void RaiseTail() {
- //Reversing right motors may be necesarry
- Hook.move_relative(800, 100);
-}
 
 void on_center_button() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
+		pros::lcd::set_text(2, "Right Side Auton Active");
+    autonselect = 0;
 	} else {
 		pros::lcd::clear_line(2);
 	}
 }
 
+void on_button_1() {
+	static bool pressed = false;
+	pressed = !pressed;
+	if (pressed) {
+		pros::lcd::set_text(2, "Left Side Auton Active");
+    autonselect = 1;
+	} else {
+		pros::lcd::clear_line(2);
+	}
+}
+void on_button_2() {
+	static bool pressed = false;
+	pressed = !pressed;
+	if (pressed) {
+		pros::lcd::set_text(2, "Right Side Auton Active");
+    autonselect = 2;
+	} else {
+		pros::lcd::clear_line(2);
+	}
+}
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -84,6 +53,8 @@ void initialize() {
 	pros::lcd::set_text(1, "Hello PROS User!");
 
 	pros::lcd::register_btn1_cb(on_center_button);
+  pros::lcd::register_btn1_cb(on_button_1);
+  pros::lcd::register_btn1_cb(on_button_2);
 }
 
 /**
@@ -116,6 +87,19 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+  pros::Controller master(pros::E_CONTROLLER_MASTER);
+  pros::Motor top_left_mtr(11);
+  pros::Motor top_right_mtr(5, true);
+  pros::Motor btm_left_mtr(20);
+  pros::Motor btm_right_mtr(10, true);
+  pros::Motor Lift_One(2);
+  pros::Motor Lift_Two(12, true);
+  pros::Motor Hook(15);
+  pros::Motor Lift_Hook(13);
+  LockStart = Lift_Hook.get_position();
+
+
+if (autonselect == 0){
   DeployLift();
   DriveFwd(48);
   RaiseLift();
@@ -126,6 +110,34 @@ void autonomous() {
   RaiseTail();
   TurnRight90(1);
   DriveFwd(36);
+}
+else if (autonselect == 1){
+  DriveFwdSlow(0);
+  LockFullYeet();
+  DriveFwd(-1);
+  LockReset();
+  DeployLift();
+  DriveFwd(0);
+  Lock();
+  RaiseLift();
+  DriveFwd(-1);
+}
+else if (autonselect == 2){
+  DriveFwdSlow(0);
+  LockFullYeet();
+  DriveFwd(-1);
+  TurnLeft90(1);
+  DriveFwd(71);
+  TurnRight90(1);
+  LockReset();
+  DeployLift();
+  DriveFwd(1);
+  Lock();
+  RaiseLift();
+  TurnRight90(1);
+  DriveFwd(71);
+  TurnRight90(1);
+}
 	/**
 	field wall to middle line: 71in
 	Lift to back: 23in
