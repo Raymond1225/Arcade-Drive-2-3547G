@@ -194,8 +194,161 @@ else if (autonselect == 2){
  		int right = master.get_analog(ANALOG_RIGHT_Y);
  		int leftx = master.get_analog(ANALOG_LEFT_X);
  		int rightx = master.get_analog(ANALOG_RIGHT_X);
+    std::string DriverSelect = "Tank";
 		/*Check left joystick for turn input*/
- 		if (rightx > 10){
+    while(DriverSelect == "Tank") {
+      top_left_mtr = left;
+      btm_left_mtr = left;
+      top_right_mtr = right;
+      btm_right_mtr = right;
+
+      if (timer == 1){
+  			hold = Lift_One.get_position();
+  			hold_Tail = Hook.get_position();
+  			timer --;
+  		}
+  			if(master.get_digital(DIGITAL_L1) == 1){
+  				Lift_One.move_velocity(100);
+  	 			Lift_Two.move_velocity(100);
+  				hold = Lift_One.get_position();
+  			}
+  			else if(master.get_digital(DIGITAL_L2) == 1){
+  				Lift_One.move_velocity(-100);
+  	 			Lift_Two.move_velocity(-100);
+  				hold = Lift_One.get_position();
+  			}
+        /*
+  	  	else if (Lift_One.get_position() < (hold - 5)){
+  				Lift_One.move_velocity(1);
+  				Lift_Two.move_velocity(1);
+  	  	}
+        */
+  			else {
+          Lift_One.move_velocity(0);
+  	 			Lift_Two.move_velocity(0);
+  				Lift_One.set_brake_mode(MOTOR_BRAKE_HOLD);;
+  				Lift_Two.set_brake_mode(MOTOR_BRAKE_HOLD);;
+  			}
+
+
+  			if (master.get_digital(DIGITAL_A)){
+  				Hook.move_velocity(100);
+  				hold_Tail = Hook.get_position();
+  			}
+  			else if (master.get_digital(DIGITAL_B)){
+  				Hook.move_velocity(-100);
+  				hold_Tail = Hook.get_position();
+  			}
+        /*
+  			else if (Hook.get_position() < (hold_Tail - 5)){
+  				Hook.move_velocity(1);
+  			}
+        */
+  			else {
+          Hook.move_velocity(0);
+  				Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
+  			}
+
+        if (master.get_digital(DIGITAL_X)){
+          Lift_Hook.move_velocity(100);
+        }
+        else if (master.get_digital(DIGITAL_Y)){
+          Lift_Hook.move_velocity(-100);
+        }
+        else {
+          Lift_Hook.move_velocity(0);
+          Lift_Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
+        }
+
+        if (master.get_digital(DIGITAL_UP)) {
+          DriverSelect = "Arcade";
+        }
+    }
+
+    while(DriverSelect == "Arcade") {
+      top_left_mtr = left;
+      btm_left_mtr = left;
+      top_right_mtr = left;
+      btm_right_mtr = left;
+
+      if (rightx > 5){
+        top_left_mtr = rightx;
+        btm_left_mtr = rightx;
+        top_right_mtr = -rightx;
+        btm_right_mtr = -rightx;
+      }
+
+      else if (rightx < 5){
+        top_left_mtr = -rightx;
+        btm_left_mtr = -rightx;
+        top_right_mtr = rightx;
+        btm_right_mtr = rightx;
+      }
+
+      if (timer == 1){
+        hold = Lift_One.get_position();
+        hold_Tail = Hook.get_position();
+        timer --;
+      }
+        if(master.get_digital(DIGITAL_L1) == 1){
+          Lift_One.move_velocity(100);
+          Lift_Two.move_velocity(100);
+          hold = Lift_One.get_position();
+        }
+        else if(master.get_digital(DIGITAL_L2) == 1){
+          Lift_One.move_velocity(-100);
+          Lift_Two.move_velocity(-100);
+          hold = Lift_One.get_position();
+        }
+        /*
+        else if (Lift_One.get_position() < (hold - 5)){
+          Lift_One.move_velocity(1);
+          Lift_Two.move_velocity(1);
+        }
+        */
+        else {
+          Lift_One.move_velocity(0);
+          Lift_Two.move_velocity(0);
+          Lift_One.set_brake_mode(MOTOR_BRAKE_HOLD);;
+          Lift_Two.set_brake_mode(MOTOR_BRAKE_HOLD);;
+        }
+
+
+        if (master.get_digital(DIGITAL_A)){
+          Hook.move_velocity(100);
+          hold_Tail = Hook.get_position();
+        }
+        else if (master.get_digital(DIGITAL_B)){
+          Hook.move_velocity(-100);
+          hold_Tail = Hook.get_position();
+        }
+        /*
+        else if (Hook.get_position() < (hold_Tail - 5)){
+          Hook.move_velocity(1);
+        }
+        */
+        else {
+          Hook.move_velocity(0);
+          Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
+        }
+
+        if (master.get_digital(DIGITAL_X)){
+          Lift_Hook.move_velocity(100);
+        }
+        else if (master.get_digital(DIGITAL_Y)){
+          Lift_Hook.move_velocity(-100);
+        }
+        else {
+          Lift_Hook.move_velocity(0);
+          Lift_Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
+        }
+
+        if (master.get_digital(DIGITAL_UP)) {
+          DriverSelect = "Tank";
+        }
+    }
+/*
+  	if (rightx > 10){
  			top_left_mtr = rightx;
  			btm_right_mtr = -rightx;
  			top_right_mtr = -rightx;
@@ -208,21 +361,21 @@ else if (autonselect == 2){
  			top_right_mtr = -rightx;
  			btm_left_mtr = rightx;
  		}
-		/*Right Joystick deadband*/
+		//Right Joystick deadband
 		else if ((5 > left) && (-5 < left) && (5 > leftx) && (-5 < leftx)){
 			top_left_mtr = 0;
 			btm_right_mtr = 0;
 			top_right_mtr = 0;
 			btm_left_mtr = 0;
 		}
-		/*Right Joystick to motor power calculations*/
+		//Right Joystick to motor power calculations
 		else {
 			top_left_mtr = left + leftx;
 			btm_right_mtr = left + leftx;
 			top_right_mtr = left - leftx;
 			btm_left_mtr = left - leftx;
 		}
-
+*/
 		/*
 		else if ((-right - right < 5) && (rightx - rightx < 5)){
 			top_left_mtr = right + rightx;
