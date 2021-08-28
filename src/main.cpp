@@ -7,7 +7,7 @@
  * "I was pressed!" and nothing.
  */
 
- int autonselect;
+ int autonselect = 3;
 
 
 
@@ -97,24 +97,44 @@ void autonomous() {
   pros::Motor Hook(15);
   pros::Motor Lift_Hook(13);
   LockStart = Lift_Hook.get_position();
-
+  int Count = 0;
 
 if (autonselect == 0){
   DeployLift();
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
   DriveFwd(48);
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
   RaiseLift();
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
   DriveFwd(12);
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
   TurnRight90(1);
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
   DeployTail();
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
   DriveFwd(-36);
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
   RaiseTail();
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
   TurnRight90(1);
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
   DriveFwd(36);
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
 }
 else if (autonselect == 1){
-  DriveFwdSlow(0);
+  DriveFwdSlow(12);
   LockFullYeet();
-  DriveFwd(-1);
+  DriveFwd(-12);
   LockReset();
   DeployLift();
   DriveFwd(0);
@@ -137,6 +157,11 @@ else if (autonselect == 2){
   TurnRight90(1);
   DriveFwd(71);
   TurnRight90(1);
+}
+else if (autonselect == 3){
+  DeployLift();
+  DriveFwd(12);
+  RaiseLift();
 }
 	/**
 	field wall to middle line: 71in
@@ -189,7 +214,9 @@ else if (autonselect == 2){
 	int timer = 1;
 	int hold_Tail;
   int DriverSelect = 1;
-
+  //master.print(0, 0, "PlaceHolder: %i", autonselect);
+  int test = -3;
+  master.print(0, 0, "PlaceHolder: %i", abs(test));
 
 
  	while (true) {
@@ -456,11 +483,13 @@ else if (autonselect == 2){
 				Lift_One.move_velocity(100);
 	 			Lift_Two.move_velocity(100);
 				hold = Lift_One.get_position();
+        master.print(1, 1, "Bruh: %i", hold);
 			}
 			else if(master.get_digital(DIGITAL_L2) == 1){
 				Lift_One.move_velocity(-100);
 	 			Lift_Two.move_velocity(-100);
 				hold = Lift_One.get_position();
+        master.print(1, 1, "Bruh: %i", hold);
 			}
       /*
 	  	else if (Lift_One.get_position() < (hold - 5)){
