@@ -288,10 +288,10 @@ else if (autonselect == 3){
   				Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
   			}
 
-        if (master.get_digital(DIGITAL_X)){
+        if (master.get_digital(DIGITAL_R1)){
           Lift_Hook.move_velocity(100);
         }
-        else if (master.get_digital(DIGITAL_Y)){
+        else if (master.get_digital(DIGITAL_R2)){
           Lift_Hook.move_velocity(-100);
         }
         else {
@@ -371,10 +371,10 @@ else if (autonselect == 3){
           Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
         }
 
-        if (master.get_digital(DIGITAL_X)){
+        if (master.get_digital(DIGITAL_R1)){
           Lift_Hook.move_velocity(100);
         }
-        else if (master.get_digital(DIGITAL_Y)){
+        else if (master.get_digital(DIGITAL_R2)){
           Lift_Hook.move_velocity(-100);
         }
         else {
@@ -523,10 +523,10 @@ else if (autonselect == 3){
 				Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
 			}
 
-      if (master.get_digital(DIGITAL_X)){
+      if (master.get_digital(DIGITAL_R1)){
         Lift_Hook.move_velocity(100);
       }
-      else if (master.get_digital(DIGITAL_Y)){
+      else if (master.get_digital(DIGITAL_R2)){
         Lift_Hook.move_velocity(-100);
       }
       else {
