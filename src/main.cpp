@@ -7,7 +7,7 @@
  * "I was pressed!" and nothing.
  */
 
- int autonselect = 3;
+ int autonselect = 2;
 
 
 
@@ -96,7 +96,7 @@ void autonomous() {
   pros::Motor Lift_Two(12, true);
   pros::Motor Hook(15);
   pros::Motor Lift_Hook(13);
-  LockStart = Lift_Hook.get_position();
+  int LockStart = Lift_Hook.get_position();
   int Count = 0;
 
 if (autonselect == 0){
@@ -135,33 +135,32 @@ else if (autonselect == 1){
   DriveFwdSlow(12);
   LockFullYeet();
   DriveFwd(-12);
-  LockReset();
-  DeployLift();
-  DriveFwd(0);
-  Lock();
-  RaiseLift();
-  DriveFwd(-1);
+  LockReset(LockStart);
 }
 else if (autonselect == 2){
-  DriveFwdSlow(0);
+  DriveFwdSlow(12);
   LockFullYeet();
-  DriveFwd(-1);
-  TurnLeft90(1);
-  DriveFwd(71);
-  TurnRight90(1);
-  LockReset();
-  DeployLift();
-  DriveFwd(1);
-  Lock();
-  RaiseLift();
-  TurnRight90(1);
-  DriveFwd(71);
-  TurnRight90(1);
-}
-else if (autonselect == 3){
+  DriveFwd(-12);
+  LockReset(LockStart);
+  Lift_Hook.move_velocity(-1);
   DeployLift();
   DriveFwd(12);
+  Lock();
   RaiseLift();
+  DriveFwd(-12);
+}
+else if (autonselect == 3){
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
+  LockStart = Lift_Hook.get_position();
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
+  LockFullYeet();
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
+  LockReset(LockStart);
+  master.print(0, 0, "PlaceHolder: %i", Count);
+  Count ++;
 }
 	/**
 	field wall to middle line: 71in

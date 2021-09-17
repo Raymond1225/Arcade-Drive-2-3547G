@@ -9,7 +9,7 @@ pros::Motor Lift_One(2);
 pros::Motor Lift_Two(12, true);
 pros::Motor Hook(15);
 pros::Motor Lift_Hook(13);
-int LockStart;
+
 
 
 void WaitTillStopLift() {
@@ -30,8 +30,22 @@ void WaitTillStopDriveBase() {
     pros::delay(50);
     Volts = top_left_mtr.get_actual_velocity();
   }
+
+
   master.print(0, 0, "PlaceHolder: %s", "You Did IT :3");
 }
+
+void WaitTillStopLock() {
+  int Volts;
+  pros::delay(150);
+  master.print(0, 0, "PlaceHolder: %i", 1);
+  Volts = Lift_Hook.get_actual_velocity();
+  while(abs(Volts) > 1){
+    pros::delay(50);
+    Volts = Lift_Hook.get_actual_velocity();
+  }
+}
+
 void WaitTillStopTail() {
   int Volts;
   pros::delay(150);
@@ -61,16 +75,23 @@ void DriveFwdSlow(int T1) {
 }
 
 void LockFullYeet() {
-  Lift_Hook.move_relative(500, 100);
+  //LockStart = Lift_Hook.get_position();
+  //master.print(0, 0, "Lock: %i", LockStart);
+  Lift_Hook.move_relative(-300, 100);
+  WaitTillStopLock();
+  //Lift_Hook.move_relative(LockStart, 100);
+  //WaitTillStopLock();
 }
 
 void Lock() {
-  Lift_Hook.move_relative(500, 100);
+  Lift_Hook.move_relative(-300, 100);
+  WaitTillStopLock();
   Lift_Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
 }
 
-void LockReset() {
-  Lift_Hook.move_relative(LockStart, 100);
+void LockReset(int LockStart) {
+  Lift_Hook.move_absolute(LockStart, 100);
+  WaitTillStopLock();
 }
 
 void TurnRight90(int NT) {
