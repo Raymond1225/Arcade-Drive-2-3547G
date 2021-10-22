@@ -7,7 +7,7 @@
  * "I was pressed!" and nothing.
  */
 
- int autonselect = 2;
+ int autonselect = 3;
 
 
 
@@ -15,7 +15,7 @@ void on_center_button() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "Right Side Auton Active");
+		pros::lcd::set_text(2, "Skills");
     autonselect = 0;
 	} else {
 		pros::lcd::clear_line(2);
@@ -26,7 +26,7 @@ void on_button_1() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "Left Side Auton Active");
+		pros::lcd::set_text(2, "Ramp Auton");
     autonselect = 1;
 	} else {
 		pros::lcd::clear_line(2);
@@ -36,7 +36,7 @@ void on_button_2() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "#3 Auton Active");
+		pros::lcd::set_text(2, "AWP Line Auton");
     autonselect = 2;
 	} else {
 		pros::lcd::clear_line(2);
@@ -100,36 +100,28 @@ void autonomous() {
   int Count = 0;
 
 if (autonselect == 0){
+  //Start Red right
+  DriveFwdSlow(12);
+  LockFullYeet();
+  DriveFwd(-12);
+  LockReset(LockStart);
+  Lift_Hook.move_velocity(-1);
   DeployLift();
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
-  DriveFwd(48);
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
-  RaiseLift();
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
   DriveFwd(12);
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
-  TurnRight90(1);
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
-  DeployTail();
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
-  DriveFwd(-36);
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
-  RaiseTail();
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
-  TurnRight90(1);
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
-  DriveFwd(36);
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
+  Lock();
+  RaiseLift();
+  DriveFwd(120);
+  DeployLift();
+  LockReset(LockStart);
+  DriveFwd(-20);
+  TurnByDegree(90);
+  DriveFwd(18);
+  GoalFind();
+  //DriveToGoal();
+  Lock();
+  RaiseLift();
+  DriveFwd(60);
+  //stops after two goals currently
 }
 else if (autonselect == 1){
   DriveFwdSlow(12);
@@ -150,17 +142,7 @@ else if (autonselect == 2){
   DriveFwd(-12);
 }
 else if (autonselect == 3){
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
-  LockStart = Lift_Hook.get_position();
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
-  LockFullYeet();
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
-  LockReset(LockStart);
-  master.print(0, 0, "PlaceHolder: %i", Count);
-  Count ++;
+  GoalFind();
 }
 	/**
 	field wall to middle line: 71in
