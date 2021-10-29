@@ -10,10 +10,35 @@ pros::Motor Lift_Two(12, true);
 pros::Motor Hook(15);
 pros::Motor Lift_Hook(13);
 pros::Vision Visions(6);
-pros::vision_signature_s_t RING = pros::Vision::signature_from_utility(1, 1311, 2173, 1742, 1981, 3679, 2830, 3, 0);
-pros::vision_signature_s_t NGOAL = pros::Vision::signature_from_utility(2, 1121, 3883, 2502, -4275, -3865, -4070, 2.5, 0);
-pros::vision_signature_s_t RGOAL = pros::Vision::signature_from_utility(3, 6921, 9167, 8044, -1573, -703, -1138, 3, 0);
-pros::vision_signature_s_t BGOAL = pros::Vision::signature_from_utility(4, -2823, -1375, -2099, 5159, 10403, 7781, 2.5, 0);
+pros::vision_object_s_t TRG;
+
+
+void SetSigs () {
+  pros::vision_signature_s_t BGOAL = pros::Vision::signature_from_utility(1, -2473, -1709, -2092, 6949, 8435, 7692, 4.900, 1);
+  pros::vision_signature_s_t NGOAL = pros::Vision::signature_from_utility(2, 1649, 2385, 2018, -3831, -3195, -3512, 3.000, 0);
+  pros::vision_signature_s_t RGOAL = pros::Vision::signature_from_utility(3, 6903, 8369, 7636, -2319, -813, -1566, 3.400, 1);
+  Visions.set_signature(1, &BGOAL);
+  Visions.set_signature(2, &NGOAL);
+  Visions.set_signature(3, &RGOAL);
+}
+
+void VisTest() {
+  pros::vision_object_s_t NRG;
+  pros::vision_object_s_t BRG;
+  pros::vision_object_s_t VRG;
+  while(true){
+    if(Visions.get_object_count() > 0){
+      pros::delay(200);
+      NRG = Visions.get_by_sig(0, 3);
+      VRG = Visions.get_by_sig(0,2);
+      BRG = Visions.get_by_sig(0, 1);
+      master.clear();
+      master.print(0, 0, "BGOAL: %i", VRG.width);
+      master.print(1, 0, "NGOAL: %i", BRG.width);
+      master.print(2, 0, "RGOAL: %i", NRG.width);
+    }
+  }
+}
 
 void WaitTillStopLift() {
   int Volts;
@@ -68,6 +93,16 @@ void DriveFwd(int T1) {
   WaitTillStopDriveBase();
 }
 
+void DriveFwdSPED(int T1) {
+	//Reversing right motors may be necesarry
+	top_left_mtr.move_relative((T1 / 12.75) * 1800, 127);
+	btm_left_mtr.move_relative((T1 / 12.75) * 1800, 127);
+	top_right_mtr.move_relative((T1 / 12.75) * 1800, 127);
+	btm_right_mtr.move_relative((T1 / 12.75) * 1800, 127);
+  WaitTillStopDriveBase();
+}
+
+
 void DriveFwdSlow(int T1) {
 	//Reversing right motors may be necesarry
 	top_left_mtr.move_relative((T1 / 12.75) * 1800, 50);
@@ -76,6 +111,16 @@ void DriveFwdSlow(int T1) {
 	btm_right_mtr.move_relative((T1 / 12.75) * 1800, 50);
   WaitTillStopDriveBase();
 }
+
+void DriveFwdARC(int T1) {
+	//Reversing right motors may be necesarry
+	top_left_mtr.move_relative((T1 / 12.75) * 1800, 50);
+	btm_left_mtr.move_relative((T1 / 12.75) * 1800, 50);
+	top_right_mtr.move_relative((T1 / 12.75) * 1800, 100);
+	btm_right_mtr.move_relative((T1 / 12.75) * 1800, 100);
+  WaitTillStopDriveBase();
+}
+
 
 void LockFullYeet() {
   //LockStart = Lift_Hook.get_position();
@@ -98,11 +143,11 @@ void LockReset(int LockStart) {
 }
 
 void TurnByDegree(int ND) {
- //Reversing right motors may be necesarry
- top_left_mtr.move_relative(-(((((((2*(13.5*13.5) / (13.5*13.5))) * 3.14) / 12.75) * 1800) / 360) * ND), 100);
- btm_left_mtr.move_relative(-(((((((2*(13.5*13.5) / (13.5*13.5))) * 3.14) / 12.75) * 1800) / 360) * ND), 100);
- top_right_mtr.move_relative((((((((2*(13.5*13.5) / (13.5*13.5))) * 3.14) / 12.75) * 1800) / 360) * ND), 100);
- btm_right_mtr.move_relative((((((((2*(13.5*13.5) / (13.5*13.5))) * 3.14) / 12.75) * 1800) / 360) * ND), 100);
+ //Positive CCW Negative CW
+ top_left_mtr.move_relative(-((((47.122 / 12.75) * 1800) / 360) * ND), 100);
+ btm_left_mtr.move_relative(-((((47.122 / 12.75) * 1800) / 360) * ND), 100);
+ top_right_mtr.move_relative(((((47.122 / 12.75) * 1800) / 360) * ND), 100);
+ btm_right_mtr.move_relative(((((47.122 / 12.75) * 1800) / 360) * ND), 100);
  WaitTillStopDriveBase();
 }
 
@@ -149,22 +194,45 @@ void GoalFind() {
   top_right_mtr.move_velocity(50);
   btm_right_mtr.move_velocity(50);
   int Volts;
+  pros::delay(50);
   Volts = top_left_mtr.get_actual_velocity();
   while(abs(Volts) > 1){
     pros::delay(50);
     Volts = top_left_mtr.get_actual_velocity();
-    pros::vision_object_s_t TRG = Visions.get_by_sig(0, 2);
-    if (TRG.width > 5){
+    TRG = Visions.get_by_sig(0, 2);
+    master.clear();
+    master.print(0, 0, "PlaceHolder: %i", TRG.width);
+    if (TRG.width > 50){
       top_left_mtr.move_velocity(0);
       btm_left_mtr.move_velocity(0);
       top_right_mtr.move_velocity(0);
       btm_right_mtr.move_velocity(0);
-      master.print(0, 0, "PlaceHolder: %i", 1);
+    }
+    }
     }
 
-
-    }
-
-//void DriveToGoal() {
-
+void DriveToGoal() {
+  while (TRG.width < 150){
+  top_left_mtr.move_velocity(70);
+  btm_left_mtr.move_velocity(70);
+  top_right_mtr.move_velocity(70);
+  btm_right_mtr.move_velocity(70);
+  if (TRG.x_middle_coord > 0) {
+  top_left_mtr.move_velocity(50);
+  btm_left_mtr.move_velocity(50);
+  top_right_mtr.move_velocity(70);
+  btm_right_mtr.move_velocity(70);
+  }
+  if (TRG.x_middle_coord < 0) {
+  top_left_mtr.move_velocity(70);
+  btm_left_mtr.move_velocity(70);
+  top_right_mtr.move_velocity(50);
+  btm_right_mtr.move_velocity(50);
+  }
+}
+top_left_mtr.move_velocity(0);
+btm_left_mtr.move_velocity(0);
+top_right_mtr.move_velocity(0);
+btm_right_mtr.move_velocity(0);
+WaitTillStopDriveBase();
 }

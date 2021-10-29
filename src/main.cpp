@@ -7,7 +7,7 @@
  * "I was pressed!" and nothing.
  */
 
- int autonselect = 3;
+ int autonselect = 0;
 
 
 
@@ -49,6 +49,7 @@ void on_button_2() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+  Visions.set_zero_point(pros::E_VISION_ZERO_CENTER);
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Hello PROS User!");
 
@@ -87,6 +88,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+  Visions.set_zero_point(pros::E_VISION_ZERO_CENTER);
   pros::Controller master(pros::E_CONTROLLER_MASTER);
   pros::Motor top_left_mtr(11);
   pros::Motor top_right_mtr(5, true);
@@ -101,26 +103,55 @@ void autonomous() {
 
 if (autonselect == 0){
   //Start Red right
-  DriveFwdSlow(12);
-  LockFullYeet();
-  DriveFwd(-12);
-  LockReset(LockStart);
   Lift_Hook.move_velocity(-1);
   DeployLift();
   DriveFwd(12);
   Lock();
   RaiseLift();
-  DriveFwd(120);
+  DriveFwdSPED(60);
   DeployLift();
   LockReset(LockStart);
-  DriveFwd(-20);
+  DriveFwdARC(-20);
+  //end of red start of right yellow
   TurnByDegree(90);
-  DriveFwd(18);
-  GoalFind();
-  //DriveToGoal();
+  DriveFwdSPED(14);
   Lock();
   RaiseLift();
-  DriveFwd(60);
+  TurnByDegree(-90);
+  DriveFwd(14);
+  DeployLift();
+  LockReset(LockStart);
+  DriveFwd(-14);
+  //end of right yellow start of middle yellow
+  TurnByDegree(90);
+  DriveFwdSPED(32);
+  Lock();
+  RaiseLift();
+  TurnByDegree(-90);
+  DriveFwd(14);
+  DeployLift();
+  LockReset(LockStart);
+  DriveFwd(-14);
+  //end of middle yellow start of left yellow
+  TurnByDegree(90);
+  DriveFwdSPED(34);
+  Lock();
+  RaiseLift();
+  TurnByDegree(-90);
+  DriveFwd(14);
+  DeployLift();
+  LockReset(LockStart);
+  DriveFwd(-14);
+  //end of left yellow start of blue
+  TurnByDegree(90);
+  RaiseLift();
+  DriveFwd(28);
+  TurnByDegree(-90);
+  DeployLift();
+  DriveFwdSPED(34);
+  Lock();
+  RaiseLift();
+  DriveFwdSPED(-88);
   //stops after two goals currently
 }
 else if (autonselect == 1){
@@ -142,7 +173,11 @@ else if (autonselect == 2){
   DriveFwd(-12);
 }
 else if (autonselect == 3){
-  GoalFind();
+  TurnByDegree(90);
+  //SetSigs();
+  //VisTest();
+  //GoalFind();
+  //DriveToGoal();
 }
 	/**
 	field wall to middle line: 71in
