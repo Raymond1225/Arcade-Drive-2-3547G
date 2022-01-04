@@ -106,41 +106,41 @@ if (autonselect == 0){
   Lift_Hook.move_velocity(-1);
   DeployLift();
   DriveFwd(12);
-  Lock();
+//  Lock();
   RaiseLift();
   DriveFwdSPED(60);
   DeployLift();
-  LockReset(LockStart);
+//  LockReset(LockStart);
   DriveFwdARC(-20);
   //end of red start of right yellow
   TurnByDegree(90);
   DriveFwdSPED(14);
-  Lock();
+//  Lock();
   RaiseLift();
   TurnByDegree(-90);
   DriveFwd(14);
   DeployLift();
-  LockReset(LockStart);
+//  LockReset(LockStart);
   DriveFwd(-14);
   //end of right yellow start of middle yellow
   TurnByDegree(90);
   DriveFwdSPED(32);
-  Lock();
+//  Lock();
   RaiseLift();
   TurnByDegree(-90);
   DriveFwd(14);
   DeployLift();
-  LockReset(LockStart);
+//  LockReset(LockStart);
   DriveFwd(-14);
   //end of middle yellow start of left yellow
   TurnByDegree(90);
   DriveFwdSPED(34);
-  Lock();
+//  Lock();
   RaiseLift();
   TurnByDegree(-90);
   DriveFwd(14);
   DeployLift();
-  LockReset(LockStart);
+//  LockReset(LockStart);
   DriveFwd(-14);
   //end of left yellow start of blue
   TurnByDegree(90);
@@ -149,26 +149,26 @@ if (autonselect == 0){
   TurnByDegree(-90);
   DeployLift();
   DriveFwdSPED(34);
-  Lock();
+//  Lock();
   RaiseLift();
   DriveFwdSPED(-88);
   //stops after two goals currently
 }
 else if (autonselect == 1){
   DriveFwdSlow(12);
-  LockFullYeet();
+//  LockFullYeet();
   DriveFwd(-12);
-  LockReset(LockStart);
+//  LockReset(LockStart);
 }
 else if (autonselect == 2){
   DriveFwdSlow(12);
-  LockFullYeet();
+  //LockFullYeet();
   DriveFwd(-12);
-  LockReset(LockStart);
+  //LockReset(LockStart);
   Lift_Hook.move_velocity(-1);
   DeployLift();
   DriveFwd(12);
-  Lock();
+  //Lock();
   RaiseLift();
   DriveFwd(-12);
 }
@@ -225,7 +225,7 @@ else if (autonselect == 3){
  	pros::Motor Lift_One(2);
  	pros::Motor Lift_Two(12, true);
 	pros::Motor Hook(15);
-  pros::Motor Lift_Hook(13);
+  pros::ADIDigitalOut Lift_Hook(1);
 	int hold;
 	int timer = 1;
 	int hold_Tail;
@@ -306,16 +306,16 @@ else if (autonselect == 3){
   			}
 
         if (master.get_digital(DIGITAL_R1)){
-          Lift_Hook.move_velocity(100);
+          Lift_Hook.set_value(true);
         }
         else if (master.get_digital(DIGITAL_R2)){
-          Lift_Hook.move_velocity(-100);
+          Lift_Hook.set_value(false);
         }
-        else {
+        /*else {
           Lift_Hook.move_velocity(0);
           Lift_Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
         }
-
+        */
         if (master.get_digital(DIGITAL_UP)) {
           DriverSelect = 2;
         }
@@ -331,8 +331,17 @@ else if (autonselect == 3){
           IntakeToggle = 0;
           master.print(3, 0, "Intake On/Off: %i", IntakeToggle);
         }
-    }
 
+        if (master.get_digital(DIGITAL_X)){
+          Tail_Scraper1.set_value(true);
+          Tail_Scraper2.set_value(true);
+        }
+
+        if (master.get_digital(DIGITAL_Y)){
+          Tail_Scraper1.set_value(false);
+          Tail_Scraper2.set_value(false);
+    }
+/*
     else if(DriverSelect == 2) {
       top_left_mtr = left;
       btm_left_mtr = left;
@@ -368,12 +377,10 @@ else if (autonselect == 3){
           Lift_Two.move_velocity(-100);
           hold = Lift_One.get_position();
         }
-        /*
         else if (Lift_One.get_position() < (hold - 5)){
           Lift_One.move_velocity(1);
           Lift_Two.move_velocity(1);
         }
-        */
         else {
           Lift_One.move_velocity(0);
           Lift_Two.move_velocity(0);
@@ -390,11 +397,11 @@ else if (autonselect == 3){
           Hook.move_velocity(-100);
           hold_Tail = Hook.get_position();
         }
-        /*
+
         else if (Hook.get_position() < (hold_Tail - 5)){
           Hook.move_velocity(1);
         }
-        */
+
         else {
           Hook.move_velocity(0);
           Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
@@ -415,6 +422,7 @@ else if (autonselect == 3){
           DriverSelect = 1;
         }
     }
+    */
 /*
   	if (rightx > 10){
  			top_left_mtr = rightx;
@@ -551,7 +559,7 @@ else if (autonselect == 3){
         Hook.move_velocity(0);
 				Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
 			}
-
+/*
       if (master.get_digital(DIGITAL_R1)){
         Lift_Hook.move_velocity(100);
       }
@@ -562,10 +570,11 @@ else if (autonselect == 3){
         Lift_Hook.move_velocity(0);
         Lift_Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
       }
+      */
  		pros::delay(10);
  	}
  }
-
+}
 
 
 //test

@@ -8,7 +8,9 @@ pros::Motor btm_right_mtr(10, true);
 pros::Motor Lift_One(2);
 pros::Motor Lift_Two(12, true);
 pros::Motor Hook(15);
-pros::Motor Lift_Hook(13);
+pros::ADIDigitalOut Lift_Hook (1);
+pros::ADIDigitalOut Tail_Scraper1 (2);
+pros::ADIDigitalOut Tail_Scraper2 (3);
 pros::Vision Visions(6);
 pros::Motor Intake(7);
 pros::vision_object_s_t TRG;
@@ -63,7 +65,7 @@ void WaitTillStopDriveBase() {
 
   master.print(0, 0, "PlaceHolder: %s", "You Did IT :3");
 }
-
+/*
 void WaitTillStopLock() {
   int Volts;
   pros::delay(150);
@@ -74,7 +76,7 @@ void WaitTillStopLock() {
     Volts = Lift_Hook.get_actual_velocity();
   }
 }
-
+*/
 void WaitTillStopTail() {
   int Volts;
   pros::delay(150);
@@ -122,7 +124,7 @@ void DriveFwdARC(int T1) {
   WaitTillStopDriveBase();
 }
 
-
+/*
 void LockFullYeet() {
   //LockStart = Lift_Hook.get_position();
   //master.print(0, 0, "Lock: %i", LockStart);
@@ -142,7 +144,7 @@ void LockReset(int LockStart) {
   Lift_Hook.move_absolute(LockStart, 100);
   WaitTillStopLock();
 }
-
+*/
 void TurnByDegree(int ND) {
  //Positive CCW Negative CW
  top_left_mtr.move_relative(-((((47.122 / 12.75) * 1800) / 360) * ND), 100);
