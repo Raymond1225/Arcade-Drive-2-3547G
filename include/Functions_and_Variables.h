@@ -10,6 +10,7 @@ pros::Motor Lift_Two(12, true);
 pros::Motor Hook(15);
 pros::Motor Lift_Hook(13);
 pros::Vision Visions(6);
+pros::Motor Intake(7);
 pros::vision_object_s_t TRG;
 
 

@@ -230,6 +230,7 @@ else if (autonselect == 3){
 	int timer = 1;
 	int hold_Tail;
   int DriverSelect = 1;
+  int IntakeToggle = 0;
   //master.print(0, 0, "PlaceHolder: %i", autonselect);
   int test = -3;
   master.print(0, 0, "PlaceHolder: %i", abs(test));
@@ -317,6 +318,18 @@ else if (autonselect == 3){
 
         if (master.get_digital(DIGITAL_UP)) {
           DriverSelect = 2;
+        }
+
+        if (master.get_digital(DIGITAL_DOWN) && IntakeToggle == 0) {
+          Intake.move_velocity(200);
+          IntakeToggle = 1;
+          master.print(3, 0, "Intake On/Off: %i", IntakeToggle);
+        }
+
+        if (master.get_digital(DIGITAL_DOWN) && IntakeToggle == 1) {
+          Intake.move_velocity(0);
+          IntakeToggle = 0;
+          master.print(3, 0, "Intake On/Off: %i", IntakeToggle);
         }
     }
 
