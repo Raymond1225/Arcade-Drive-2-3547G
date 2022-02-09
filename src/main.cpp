@@ -7,7 +7,7 @@
  * "I was pressed!" and nothing.
  */
 
- int autonselect = 0;
+ int autonselect = 4;
 
 
 
@@ -16,7 +16,7 @@ void on_center_button() {
 	pressed = !pressed;
 	if (pressed) {
 		pros::lcd::set_text(2, "Skills");
-    autonselect = 0;
+    autonselect = 5;
 	} else {
 		pros::lcd::clear_line(2);
 	}
@@ -26,8 +26,8 @@ void on_button_1() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "Ramp Auton");
-    autonselect = 1;
+		pros::lcd::set_text(2, "Auton");
+    autonselect = 4;
 	} else {
 		pros::lcd::clear_line(2);
 	}
@@ -36,8 +36,8 @@ void on_button_2() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "AWP Line Auton");
-    autonselect = 2;
+		pros::lcd::set_text(2, "Dud");
+    autonselect = 0;
 	} else {
 		pros::lcd::clear_line(2);
 	}
@@ -179,6 +179,58 @@ else if (autonselect == 3){
   //GoalFind();
   //DriveToGoal();
 }
+
+else if (autonselect == 4){
+  //pick up AWP line goal
+  Lift_One.set_brake_mode(MOTOR_BRAKE_HOLD);
+  Lift_Two.set_brake_mode(MOTOR_BRAKE_HOLD);
+  DeployTail();
+  LockClaw();
+  pros::delay(100);
+  DriveFwd(-100);
+  DeployLift();
+  RaiseTail();
+  pros::delay(1000);
+  DriveFwd(18);
+  DriveFwdARCRR(58);
+  DriveFwd(26);
+  RetractClaw();
+  DriveFwd(-30);
+  /*
+  TurnByDegree(90);
+  DriveFwd(12);
+  TurnLeft90(90);
+  DriveFwdSPED(24);
+  LockClaw();
+  RaiseLift();
+  DriveFwdSPED(-24);
+  */
+}
+
+else if (autonselect == 5){
+  //red side goal on ramp
+  DeployTail();
+  DeployDriveFwd(-12);
+  //yellow goal 1
+  DriveFwdARCR(12);
+  DriveFwd(60);
+  //Blue AWP Line Goal
+  TurnByDegree(90);
+  LockClaw();
+  LowerTail();
+  //Middle yellow
+  DriveFwdSPED(-24);
+  TurnByDegree(30);
+  DriveFwdSPED(-60);
+  //Red AWP line
+  RetractClaw();
+  TurnByDegree(200);
+  DriveFwd(12);
+  LockClaw();
+  //Yellow #3
+  DriveFwdARC(-12);
+  DriveFwdSPED(-80);
+}
 	/**
 	field wall to middle line: 71in
 	Lift to back: 23in
@@ -316,9 +368,7 @@ else if (autonselect == 3){
           Lift_Hook.set_brake_mode(MOTOR_BRAKE_HOLD);
         }
         */
-        if (master.get_digital(DIGITAL_UP)) {
-          DriverSelect = 2;
-        }
+
 
         if (master.get_digital(DIGITAL_DOWN) && IntakeToggle == 0) {
           Intake.move_velocity(200);
