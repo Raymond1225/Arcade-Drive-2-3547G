@@ -7,7 +7,7 @@
  * "I was pressed!" and nothing.
  */
 
- int autonselect = 4;
+ int autonselect = 7;
 
 
 
@@ -182,20 +182,10 @@ else if (autonselect == 3){
 
 else if (autonselect == 4){
   //pick up AWP line goal
-  Lift_One.set_brake_mode(MOTOR_BRAKE_HOLD);
-  Lift_Two.set_brake_mode(MOTOR_BRAKE_HOLD);
-  DeployTail();
-  LockClaw();
-  pros::delay(100);
-  DriveFwd(-100);
-  DeployLift();
-  RaiseTail();
-  pros::delay(1000);
-  DriveFwd(18);
-  DriveFwdARCRR(58);
-  DriveFwd(26);
   RetractClaw();
-  DriveFwd(-30);
+  DeployDriveFwd(14);
+  DriveFwdFindGoal();
+  DriveFwdSPED(-36);
   /*
   TurnByDegree(90);
   DriveFwd(12);
@@ -209,27 +199,40 @@ else if (autonselect == 4){
 
 else if (autonselect == 5){
   //red side goal on ramp
-  DeployTail();
-  DeployDriveFwd(-12);
+  //DeployTail();
+//  DeployDriveFwd(-36);
   //yellow goal 1
-  DriveFwdARCR(12);
-  DriveFwd(60);
-  //Blue AWP Line Goal
-  TurnByDegree(90);
-  LockClaw();
-  LowerTail();
-  //Middle yellow
-  DriveFwdSPED(-24);
-  TurnByDegree(30);
-  DriveFwdSPED(-60);
-  //Red AWP line
+//  DriveFwdARCR(12);
   RetractClaw();
-  TurnByDegree(200);
-  DriveFwd(12);
-  LockClaw();
-  //Yellow #3
-  DriveFwdARC(-12);
-  DriveFwdSPED(-80);
+  DeployDriveFwd(36);
+  DriveFwdSPED(-27);
+  TurnByDegree(-47);
+  DriveFwdFindGoal();
+  DriveFwdARCR(-10);
+  DriveFwdSPED(-60);
+  Lift_Two.move_relative(100, 100);
+  Lift_One.move_relative(100, 100);
+}
+
+else if (autonselect == 6){
+  RetractClaw();
+  DriveFwdFindGoal();
+}
+
+else if (autonselect == 7){
+  YoinkProtocal(-23.35);
+  RaiseLift();
+  TurnByDegree(47);
+  DriveFwd(13);
+  DriveFwd(-2.5);
+  DepoRings();
+  DriveFwd(-5);
+  Lift_One.move_relative(-650, 100);
+  Lift_Two.move_relative(-650, 100);
+  WaitTillStopLift();
+  RetractClaw();
+  DriveFwdFindGoal();
+  DriveFwd(-10);
 }
 	/**
 	field wall to middle line: 71in
@@ -358,10 +361,10 @@ else if (autonselect == 5){
   			}
 
         if (master.get_digital(DIGITAL_R1)){
-          Lift_Hook.set_value(true);
+          Lift_Hook.set_value(false);
         }
         else if (master.get_digital(DIGITAL_R2)){
-          Lift_Hook.set_value(false);
+          Lift_Hook.set_value(true);
         }
         /*else {
           Lift_Hook.move_velocity(0);
