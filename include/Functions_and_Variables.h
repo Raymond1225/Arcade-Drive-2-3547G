@@ -173,7 +173,7 @@ void DeployDriveFwd(int T1) {
   WaitTillStopLift();
 }
 
-void DriveFwdSPED(int T1) {
+void DriveFwdSPED(float T1) {
 	//Reversing right motors may be necesarry
 	top_left_mtr.move_relative((T1 / 12.75) * 3600, 200);
 	btm_left_mtr.move_relative((T1 / 12.75) * 3600, 200);
@@ -201,7 +201,18 @@ void YoinkProtocal(float T1) {
   WaitTillStopLift();
 }
 
-
+void DriveFwdDeployAll(int T1) {
+  top_left_mtr.move_relative((T1 / 12.75) * 3600, 200);
+  btm_left_mtr.move_relative((T1 / 12.75) * 3600, 200);
+  top_right_mtr.move_relative((T1 / 12.75) * 3600, 200);
+  btm_right_mtr.move_relative((T1 / 12.75) * 3600, 200);
+  Lift_One.move_relative(-4350, 100);
+  Lift_Two.move_relative(-4350, 100);
+  Hook.move_relative(-2075, 100);
+  WaitTillStopTail();
+  WaitTillStopDriveBase();
+  //WaitTillStopLift();
+}
 
 void DriveFwdSlow(int T1) {
 	//Reversing right motors may be necesarry
@@ -230,10 +241,10 @@ void DriveFwdARC(int T1) {
   WaitTillStopDriveBase();
 }
 
-void DriveFwdARCR(int T1) {
+void DriveFwdARCR(float T1) {
 	//Reversing right motors may be necesarry
-	top_right_mtr.move_relative((T1 / 12.75) * 3600, 120);
-	btm_right_mtr.move_relative((T1 / 12.75) * 3600, 120);
+	top_right_mtr.move_relative((T1 / 12.75) * 3600, 200);
+	btm_right_mtr.move_relative((T1 / 12.75) * 3600, 200);
 	top_left_mtr.move_relative((T1 / 12.75) * 3600 * .5, 60);
 	btm_left_mtr.move_relative((T1 / 12.75) * 3600 * .5, 60);
   WaitTillStopDriveBaseR();

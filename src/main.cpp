@@ -7,7 +7,7 @@
  * "I was pressed!" and nothing.
  */
 
- int autonselect = 7;
+ int autonselect = 8;
 
 
 
@@ -26,8 +26,8 @@ void on_button_1() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "Auton");
-    autonselect = 4;
+		pros::lcd::set_text(2, "Ramp Side");
+    autonselect = 8;
 	} else {
 		pros::lcd::clear_line(2);
 	}
@@ -36,8 +36,8 @@ void on_button_2() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
-		pros::lcd::set_text(2, "Dud");
-    autonselect = 0;
+		pros::lcd::set_text(2, "AWP Line");
+    autonselect = 7;
 	} else {
 		pros::lcd::clear_line(2);
 	}
@@ -233,6 +233,30 @@ else if (autonselect == 7){
   RetractClaw();
   DriveFwdFindGoal();
   DriveFwd(-10);
+}
+
+else if (autonselect == 8){
+  DriveFwdDeployAll(-12);
+  top_right_mtr.move_relative((-.5 / 12.75) * 3600, 100);
+  btm_right_mtr.move_relative((-.5 / 12.75) * 3600, 100);
+  top_left_mtr.move_relative((-.5 / 12.75) * 3600 * .5, 30);
+  btm_left_mtr.move_relative((-.5 / 12.75) * 3600 * .5, 30);
+  WaitTillStopDriveBaseR();
+  DriveFwdARCR(-3.45);
+  DriveFwdSPED(-9.1);
+  RaiseTail();
+  pros::delay(100);
+  WaitTillStopLift();
+  DriveFwdSPED(10);
+  RaiseLift();
+  TurnByDegree(28);
+  DriveFwd(15);
+  DriveFwd(-3);
+  DepoRings();
+  DriveFwd(-5);
+  Lift_One.move_relative(-650, 100);
+  Lift_Two.move_relative(-650, 100);
+  WaitTillStopLift();
 }
 	/**
 	field wall to middle line: 71in
