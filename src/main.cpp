@@ -7,7 +7,7 @@
  * "I was pressed!" and nothing.
  */
 
- int autonselect = 8;
+ int autonselect = 7;
 
 
 
@@ -220,9 +220,11 @@ else if (autonselect == 6){
 }
 
 else if (autonselect == 7){
-  YoinkProtocal(-23.35);
+  YoinkProtocal(22.6);
+  /*
+  YoinkProtocal(-22.6);
   RaiseLift();
-  TurnByDegree(47);
+  TurnByDegree(49);
   DriveFwd(13);
   DriveFwd(-2.5);
   DepoRings();
@@ -233,6 +235,7 @@ else if (autonselect == 7){
   RetractClaw();
   DriveFwdFindGoal();
   DriveFwd(-10);
+  */
 }
 
 else if (autonselect == 8){
@@ -310,10 +313,12 @@ else if (autonselect == 8){
 	int hold_Tail;
   int DriverSelect = 1;
   int IntakeToggle = 0;
+  int LiftSpeed = 100;
   //master.print(0, 0, "PlaceHolder: %i", autonselect);
   int test = -3;
+  master.clear();
   master.print(0, 0, "PlaceHolder: %i", abs(test));
-
+  master.print(1, 0, "Lift Speed: %i", LiftSpeed);
 
  	while (true) {
     int left = master.get_analog(ANALOG_LEFT_Y);
@@ -323,35 +328,41 @@ else if (autonselect == 8){
 
 
 
-      top_left_mtr = left;
-      btm_left_mtr = left;
-      top_right_mtr = right;
-      btm_right_mtr = right;
 
 
 
 		/*Check left joystick for turn input*/
     if(DriverSelect == 1) {
-      top_left_mtr = left;
-      btm_left_mtr = left;
-      top_right_mtr = right;
-      btm_right_mtr = right;
+      btm_left_mtr.move_velocity(left*(200/127));
+      btm_right_mtr.move_velocity(right*(200/127));
+      top_left_mtr.move_velocity(left*(200/127));
+      top_right_mtr.move_velocity(right*(200/127));
 
       if (timer == 1){
   			hold = Lift_One.get_position();
   			hold_Tail = Hook.get_position();
+
   			timer --;
   		}
+
+      if(master.get_digital(DIGITAL_UP)){
+        LiftSpeed = 200;
+      }
+      else if(master.get_digital(DIGITAL_DOWN)){
+        LiftSpeed = 100;
+      }
+
   			if(master.get_digital(DIGITAL_L1) == 1){
-  				Lift_One.move_velocity(100);
-  	 			Lift_Two.move_velocity(100);
+  				Lift_One.move_velocity(LiftSpeed);
+  	 			Lift_Two.move_velocity(LiftSpeed);
   				hold = Lift_One.get_position();
   			}
   			else if(master.get_digital(DIGITAL_L2) == 1){
-  				Lift_One.move_velocity(-100);
-  	 			Lift_Two.move_velocity(-100);
+  				Lift_One.move_velocity(-LiftSpeed);
+  	 			Lift_Two.move_velocity(-LiftSpeed);
   				hold = Lift_One.get_position();
   			}
+
         /*
   	  	else if (Lift_One.get_position() < (hold - 5)){
   				Lift_One.move_velocity(1);
@@ -364,6 +375,8 @@ else if (autonselect == 8){
   				Lift_One.set_brake_mode(MOTOR_BRAKE_HOLD);;
   				Lift_Two.set_brake_mode(MOTOR_BRAKE_HOLD);;
   			}
+
+
 
 
   			if (master.get_digital(DIGITAL_A)){
@@ -397,17 +410,6 @@ else if (autonselect == 8){
         */
 
 
-        if (master.get_digital(DIGITAL_DOWN) && IntakeToggle == 0) {
-          Intake.move_velocity(200);
-          IntakeToggle = 1;
-          master.print(3, 0, "Intake On/Off: %i", IntakeToggle);
-        }
-
-        if (master.get_digital(DIGITAL_DOWN) && IntakeToggle == 1) {
-          Intake.move_velocity(0);
-          IntakeToggle = 0;
-          master.print(3, 0, "Intake On/Off: %i", IntakeToggle);
-        }
 
         if (master.get_digital(DIGITAL_X)){
           Tail_Scraper1.set_value(true);
@@ -587,36 +589,16 @@ else if (autonselect == 8){
  			Lift_One.move_velocity(1);
  			Lift_Two.move_velocity(1);
  		}
-		*/
+*/
 		if (timer == 1){
 			hold = Lift_One.get_position();
 			hold_Tail = Hook.get_position();
 			timer --;
 		}
-			if(master.get_digital(DIGITAL_L1) == 1){
-				Lift_One.move_velocity(100);
-	 			Lift_Two.move_velocity(100);
-				hold = Lift_One.get_position();
-        master.print(1, 1, "Bruh: %i", hold);
-			}
-			else if(master.get_digital(DIGITAL_L2) == 1){
-				Lift_One.move_velocity(-100);
-	 			Lift_Two.move_velocity(-100);
-				hold = Lift_One.get_position();
-        master.print(1, 1, "Bruh: %i", hold);
-			}
-      /*
-	  	else if (Lift_One.get_position() < (hold - 5)){
-				Lift_One.move_velocity(1);
-				Lift_Two.move_velocity(1);
-	  	}
-      */
-			else {
-        Lift_One.move_velocity(0);
-	 			Lift_Two.move_velocity(0);
-				Lift_One.set_brake_mode(MOTOR_BRAKE_HOLD);;
-				Lift_Two.set_brake_mode(MOTOR_BRAKE_HOLD);;
-			}
+
+
+
+
 
 
 			if (master.get_digital(DIGITAL_A)){
@@ -627,6 +609,7 @@ else if (autonselect == 8){
 				Hook.move_velocity(-100);
 				hold_Tail = Hook.get_position();
 			}
+
       /*
 			else if (Hook.get_position() < (hold_Tail - 5)){
 				Hook.move_velocity(1);

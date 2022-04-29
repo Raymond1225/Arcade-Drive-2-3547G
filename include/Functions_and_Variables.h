@@ -124,10 +124,10 @@ void RetractScraper () {
 
 void DriveFwd(float T1) {
 	//Reversing right motors may be necesarry
-	top_left_mtr.move_relative((T1 / 12.75) * 3600, 130);
-	btm_left_mtr.move_relative((T1 / 12.75) * 3600, 130);
-	top_right_mtr.move_relative((T1 / 12.75) * 3600, 130);
-	btm_right_mtr.move_relative((T1 / 12.75) * 3600, 130);
+	top_left_mtr.move_relative((T1 / 12.75) * 1800, 130);
+	btm_left_mtr.move_relative((T1 / 12.75) * 1800, 130);
+	top_right_mtr.move_relative((T1 / 12.75) * 1800, 130);
+	btm_right_mtr.move_relative((T1 / 12.75) * 1800, 130);
   WaitTillStopDriveBase();
 }
 
@@ -163,10 +163,10 @@ void DriveFwdFindGoal() {
 
 void DeployDriveFwd(int T1) {
 	//Reversing right motors may be necesarry
-	top_left_mtr.move_relative((T1 / 12.75) * 3600, 130);
-	btm_left_mtr.move_relative((T1 / 12.75) * 3600, 130);
-	top_right_mtr.move_relative((T1 / 12.75) * 3600, 130);
-	btm_right_mtr.move_relative((T1 / 12.75) * 3600, 130);
+	top_left_mtr.move_relative((T1 / 12.75) * 1800, 130);
+	btm_left_mtr.move_relative((T1 / 12.75) * 1800, 130);
+	top_right_mtr.move_relative((T1 / 12.75) * 1800, 130);
+	btm_right_mtr.move_relative((T1 / 12.75) * 1800, 130);
   Lift_One.move_relative(-4350, 100);
   Lift_Two.move_relative(-4350, 100);
   WaitTillStopDriveBase();
@@ -175,37 +175,37 @@ void DeployDriveFwd(int T1) {
 
 void DriveFwdSPED(float T1) {
 	//Reversing right motors may be necesarry
-	top_left_mtr.move_relative((T1 / 12.75) * 3600, 200);
-	btm_left_mtr.move_relative((T1 / 12.75) * 3600, 200);
-	top_right_mtr.move_relative((T1 / 12.75) * 3600, 200);
-	btm_right_mtr.move_relative((T1 / 12.75) * 3600, 200);
+	top_left_mtr.move_relative((T1 / 12.75) * 1800, 200);
+	btm_left_mtr.move_relative((T1 / 12.75) * 1800, 200);
+	top_right_mtr.move_relative((T1 / 12.75) * 1800, 200);
+	btm_right_mtr.move_relative((T1 / 12.75) * 1800, 200);
   WaitTillStopDriveBase();
 }
 
 
 void YoinkProtocal(float T1) {
 	//Reversing right motors may be necesarry
-	top_left_mtr.move_relative((T1 / 12.75) * 3600, 200);
-	btm_left_mtr.move_relative((T1 / 12.75) * 3600, 200);
-	top_right_mtr.move_relative((T1 / 12.75) * 3600, 200);
-	btm_right_mtr.move_relative((T1 / 12.75) * 3600, 200);
-  Lift_One.move_relative(-4350, 100);
-  Lift_Two.move_relative(-4350, 100);
+  RetractClaw();
+	top_left_mtr.move_relative((T1 / 12.75) * 1800, 200);
+	btm_left_mtr.move_relative((T1 / 12.75) * 1800, 200);
+	top_right_mtr.move_relative((T1 / 12.75) * 1800, 200);
+	btm_right_mtr.move_relative((T1 / 12.75) * 1800, 200);
+  Lift_One.move_relative(-4350, 200);
+  Lift_Two.move_relative(-4350, 200);
   Hook.move_relative(-2075, 100);
-  WaitTillStopTail();
-  WaitTillStopDriveBase();
-  RaiseTail();
-  pros::delay(100);
-  DriveFwdSPED(9);
-  WaitTillStopDriveBase();
   WaitTillStopLift();
+  WaitTillStopDriveBase();
+  DriveFwdFindGoal();
+  DriveFwdSPED(-900);
+  WaitTillStopDriveBase();
+  WaitTillStopTail();
 }
 
 void DriveFwdDeployAll(int T1) {
-  top_left_mtr.move_relative((T1 / 12.75) * 3600, 200);
-  btm_left_mtr.move_relative((T1 / 12.75) * 3600, 200);
-  top_right_mtr.move_relative((T1 / 12.75) * 3600, 200);
-  btm_right_mtr.move_relative((T1 / 12.75) * 3600, 200);
+  top_left_mtr.move_relative((T1 / 12.75) * 1800, 200);
+  btm_left_mtr.move_relative((T1 / 12.75) * 1800, 200);
+  top_right_mtr.move_relative((T1 / 12.75) * 1800, 200);
+  btm_right_mtr.move_relative((T1 / 12.75) * 1800, 200);
   Lift_One.move_relative(-4350, 100);
   Lift_Two.move_relative(-4350, 100);
   Hook.move_relative(-2075, 100);
@@ -216,26 +216,26 @@ void DriveFwdDeployAll(int T1) {
 
 void DriveFwdSlow(int T1) {
 	//Reversing right motors may be necesarry
-	top_left_mtr.move_relative((T1 / 12.75) * 3600, 50);
-	btm_left_mtr.move_relative((T1 / 12.75) * 3600, 50);
-	top_right_mtr.move_relative((T1 / 12.75) * 3600, 50);
-	btm_right_mtr.move_relative((T1 / 12.75) * 3600, 50);
+	top_left_mtr.move_relative((T1 / 12.75) * 1800, 50);
+	btm_left_mtr.move_relative((T1 / 12.75) * 1800, 50);
+	top_right_mtr.move_relative((T1 / 12.75) * 1800, 50);
+	btm_right_mtr.move_relative((T1 / 12.75) * 1800, 50);
   WaitTillStopDriveBase();
 }
 
 void DriveFwdSwerve(int T1) {
 	//Reversing right motors may be necesarry
-	top_left_mtr.move_relative((T1 / 12.75) * 3600, 60);
-	btm_left_mtr.move_relative((T1 / 12.75) * 3600, 60);
-	top_right_mtr.move_relative((T1 / 12.75) * 3600, 120);
-	btm_right_mtr.move_relative((T1 / 12.75) * 3600, 120);
+	top_left_mtr.move_relative((T1 / 12.75) * 1800, 60);
+	btm_left_mtr.move_relative((T1 / 12.75) * 1800, 60);
+	top_right_mtr.move_relative((T1 / 12.75) * 1800, 120);
+	btm_right_mtr.move_relative((T1 / 12.75) * 1800, 120);
   WaitTillStopDriveBase();
 }
 
 void DriveFwdARC(int T1) {
 	//Reversing right motors may be necesarry
-	top_left_mtr.move_relative((T1 / 12.75) * 3600, 120);
-	btm_left_mtr.move_relative((T1 / 12.75) * 3600, 120);
+	top_left_mtr.move_relative((T1 / 12.75) * 1800, 120);
+	btm_left_mtr.move_relative((T1 / 12.75) * 1800, 120);
 //	top_right_mtr.move_relative((T1 / 12.75) * 900 * .5, 60);
 //	btm_right_mtr.move_relative((T1 / 12.75) * 900 * .5, 60);
   WaitTillStopDriveBase();
@@ -243,19 +243,19 @@ void DriveFwdARC(int T1) {
 
 void DriveFwdARCR(float T1) {
 	//Reversing right motors may be necesarry
-	top_right_mtr.move_relative((T1 / 12.75) * 3600, 200);
-	btm_right_mtr.move_relative((T1 / 12.75) * 3600, 200);
-	top_left_mtr.move_relative((T1 / 12.75) * 3600 * .5, 60);
-	btm_left_mtr.move_relative((T1 / 12.75) * 3600 * .5, 60);
+	top_right_mtr.move_relative((T1 / 12.75) * 1800, 200);
+	btm_right_mtr.move_relative((T1 / 12.75) * 1800, 200);
+	top_left_mtr.move_relative((T1 / 12.75) * 1800 * .5, 60);
+	btm_left_mtr.move_relative((T1 / 12.75) * 1800 * .5, 60);
   WaitTillStopDriveBaseR();
 }
 
 void DriveFwdARCRR(int T1) {
 	//Reversing right motors may be necesarry
-	top_right_mtr.move_relative((T1 / 12.75) * 3600, 120);
-	btm_right_mtr.move_relative((T1 / 12.75) * 3600, 120);
-	top_left_mtr.move_relative((T1 / 12.75) * 3600 * .15, 60);
-	btm_left_mtr.move_relative((T1 / 12.75) * 3600 * .15, 60);
+	top_right_mtr.move_relative((T1 / 12.75) * 1800, 120);
+	btm_right_mtr.move_relative((T1 / 12.75) * 1800, 120);
+	top_left_mtr.move_relative((T1 / 12.75) * 1800 * .15, 60);
+	btm_left_mtr.move_relative((T1 / 12.75) * 1800 * .15, 60);
   WaitTillStopDriveBaseR();
 }
 /*
@@ -281,10 +281,10 @@ void LockReset(int LockStart) {
 */
 void TurnByDegree(int ND) {
  //Positive CCW Negative CW
- top_left_mtr.move_relative(-((((47.122 / 12.75) * 3600) / 360) * ND), 100);
- btm_left_mtr.move_relative(-((((47.122 / 12.75) * 3600) / 360) * ND), 100);
- top_right_mtr.move_relative(((((47.122 / 12.75) * 3600) / 360) * ND), 100);
- btm_right_mtr.move_relative(((((47.122 / 12.75) * 3600) / 360) * ND), 100);
+ top_left_mtr.move_relative(-((((47.122 / 12.75) * 1800) / 360) * ND), 100);
+ btm_left_mtr.move_relative(-((((47.122 / 12.75) * 1800) / 360) * ND), 100);
+ top_right_mtr.move_relative(((((47.122 / 12.75) * 1800) / 360) * ND), 100);
+ btm_right_mtr.move_relative(((((47.122 / 12.75) * 1800) / 360) * ND), 100);
  WaitTillStopDriveBase();
 }
 
